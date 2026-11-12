@@ -1,27 +1,34 @@
 # Changelog
 
-## Unreleased
+## 1.0.0: 2026-11-12
+
+First stable release. It contains the 1.0.0rc1 features below, plus these changes.
 
 * **Lock:**
   - The custom `posixlock` module is replaced by
-    [portalocker](https://github.com/wolph/portalocker) `TemporaryFileLock`, a new dependency
-    pinned exactly `portalocker==4.4.2` (BSD-3-Clause), plus a small fail-closed open guard.
+    [portalocker](https://github.com/wolph/portalocker) `TemporaryFileLock`, pinned exactly
+    `portalocker==4.4.2` (BSD-3-Clause), plus a small fail-closed open guard (`O_NOFOLLOW`, an
+    `fstat` check, never `O_TRUNC`).
   - Any other installed portalocker version refuses writes before the lock path is touched.
   - The lock file still exists only during a write, and hostile lock paths still refuse the
     write. Windows writes remain unsupported.
-  - **Narrower guarantee than before (accepted by the maintainer):** it covers a stable,
-    owner-controlled directory only. Safety against renames or replacements of directory entries
-    during a write is no longer promised, because the pinned-directory semantics are gone and
-    release follows symlinks. See `SECURITY.md`.
+  - **Supported scope:** a stable, owner-controlled directory on a local POSIX filesystem. This is
+    narrower than 1.0.0rc1: safety against renames or replacements of directory entries during
+    a write is no longer promised. See `SECURITY.md`.
   - **Upgrade policy:** the pin changes only after a review of portalocker's open path and a
     rerun of `tests/test_lock.py` on the new version.
-  - **Validation (2026-11-12, Linux, CPython 3.12, portalocker 4.4.2):** 219 tests passed on
-    tmpfs and on ext4; the stdio smoke test against a freshly installed wheel prints
-    `SMOKE OK`. This is a separate measurement from the historical 1.0.0rc1 figure (206) below.
+* **Docs:**
+  - The README is now a short, human-first introduction.
+  - The tool signatures, the write contract, the review-state details and the maintainer
+    release steps moved to the new `docs/REFERENCE.md`.
+  - The agent install prompt now names the official repository URL and `<MCP_CLIENT_NAME>`
+    correctly.
+* **Validation (2026-11-12, Linux, CPython 3.12, portalocker 4.4.2):** 219 tests passed; the stdio
+  smoke test against a freshly installed 1.0.0 wheel printed `SMOKE OK`.
 
-## 1.0.0rc1: release candidate
+## 1.0.0rc1: release candidate (historical)
 
-First release candidate.
+First release candidate. Superseded by 1.0.0.
 
 * **Licensing:** software under AGPL-3.0-or-later and documentation under CC-BY-SA-4.0,
   copyright 2026 Ben Blain. Verbatim license texts are in `LICENSE` and `LICENSES/`; scope is set
@@ -44,7 +51,7 @@ First release candidate.
   - absolute paths with an optional `--allow-dir` allowlist; `PDF_REVIEW_ROOT` is refused at
     startup;
   - revision checks with a final re-hash; atomic, verified incremental writes;
-  - a transient inode-validated POSIX lock (replaced by portalocker; see Unreleased);
+  - a transient inode-validated POSIX lock (replaced by portalocker in 1.0.0);
   - encrypted and signed PDFs refused;
   - untrusted-content warnings for agents.
 * **Platforms:** Linux is supported; macOS is expected to work but untested; Windows is
@@ -56,5 +63,5 @@ First release candidate.
   - The FreeText and history-full refusals said "reply instead". They now state that nothing was
     changed.
   - A regression test asserts that no error text names a removed tool.
-* **Validation (Linux, CPython 3.12), as measured for the 1.0.0rc1 release with the custom lock:** 206 tests passed; the stdio smoke test against the
-  installed wheel prints `SMOKE OK`.
+* **Validation (historical, Linux, CPython 3.12, with the custom lock):** 206 tests passed; the
+  stdio smoke test against the installed wheel printed `SMOKE OK`.

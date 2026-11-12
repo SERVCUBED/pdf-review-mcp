@@ -35,5 +35,5 @@ All of them must pass. The CI workflow (`.github/workflows/ci.yml`) runs the sam
 * **Don't add compatibility shims or migration paths** for unreleased formats. Unknown record
   versions must keep failing closed.
 * **Treat PDF content as untrusted** in code and in tool descriptions.
-* Keep tool schemas, `README.md` and `docs/AGENT_GUIDE.md` consistent. Tests assert the exact
-  tool set.
+* Keep tool schemas, `docs/REFERENCE.md`, `AGENTS.md` and `docs/AGENT_GUIDE.md` consistent.
+  Tests assert the exact tool set.

@@ -1,6 +1,6 @@
 # AGENTS.md: runbook for AI agents
 
-You are installing or operating **pdf-review-mcp 1.0.0rc1**, a release candidate. Follow these
+You are installing or operating **pdf-review-mcp 1.0.0**. Follow these
 rules exactly. If a step cannot be completed as written, **stop and ask the human**; don't
 improvise a workaround. The detailed guide is in [docs/AGENT_GUIDE.md](docs/AGENT_GUIDE.md), and
 installation details are in [docs/INSTALL.md](docs/INSTALL.md).
@@ -36,7 +36,8 @@ installation details are in [docs/INSTALL.md](docs/INSTALL.md).
   not create system directories.
 * Find out where the source comes from:
   * **a local clone or unpacked archive** (preferred, works offline);
-  * **a git URL** given by the human (`git clone <REPO_URL>`). Never guess a URL.
+  * **a git URL** given by the human, or the official repository
+    `https://github.com/SERVCUBED/pdf-review-mcp`. Never guess any other URL.
 * The runtime dependencies are `fastmcp`, `pymupdf` and `portalocker` (see `pyproject.toml`). If
   they must be downloaded and network access is unavailable or not permitted, stop and tell the
   human (see the offline notes in docs/INSTALL.md).
@@ -55,8 +56,8 @@ installation details are in [docs/INSTALL.md](docs/INSTALL.md).
 ```bash
 cd <path-to-repo>
 uv build --wheel --out-dir dist
-uv tool install ./dist/pdf_review_mcp-1.0.0rc1-py3-none-any.whl
-command -v pdf-review-mcp && pdf-review-mcp --version     # expect 1.0.0rc1
+uv tool install ./dist/pdf_review_mcp-1.0.0-py3-none-any.whl
+command -v pdf-review-mcp && pdf-review-mcp --version     # expect 1.0.0
 ```
 
 Without uv: `python3 -m venv ~/.local/share/pdf-review-mcp-venv && ~/.local/share/pdf-review-mcp-venv/bin/pip install .`

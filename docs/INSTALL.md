@@ -1,12 +1,13 @@
 # Installation
 
-The package is not published on PyPI. All installs are from a local source tree: a clone of the
-repository, or an unpacked release archive.
+The package is not published on PyPI. All installs are from a local source tree, usually a clone
+of https://github.com/SERVCUBED/pdf-review-mcp.
 
 ## Prerequisites
 
 * Linux (supported) or macOS (expected to work, untested). Windows is not supported for writing.
-* Python ≥ 3.11 (`python3 --version`). The release candidate was tested on CPython 3.12 and 3.14.
+* Python ≥ 3.11 (`python3 --version`). Release 1.0.0 was validated on CPython 3.12; the CI
+  configuration covers 3.11 to 3.14.
 * Either [uv](https://docs.astral.sh/uv/) (recommended) or `pip` with `venv`.
 * Network access to the package index, to download `fastmcp`, `pymupdf` and `portalocker`, unless
   they are already in your local cache or wheelhouse (see "Offline" below).
@@ -23,8 +24,8 @@ repository, or an unpacked release archive.
 ```bash
 cd pdf-review-mcp
 uv build --wheel --out-dir dist
-uv tool install ./dist/pdf_review_mcp-1.0.0rc1-py3-none-any.whl
-pdf-review-mcp --version                      # 1.0.0rc1
+uv tool install ./dist/pdf_review_mcp-1.0.0-py3-none-any.whl
+pdf-review-mcp --version                      # 1.0.0
 command -v pdf-review-mcp                     # absolute path for your MCP client config
 ```
 
@@ -45,10 +46,11 @@ client config.
 
 ## Option C: from a git URL
 
-`<REPO_URL>` is a placeholder; use the URL the repository owner gave you.
+The official repository is `https://github.com/SERVCUBED/pdf-review-mcp`. Use a different URL
+only if the repository owner gave you one.
 
 ```bash
-git clone <REPO_URL> pdf-review-mcp && cd pdf-review-mcp   # then Option A or B
+git clone https://github.com/SERVCUBED/pdf-review-mcp pdf-review-mcp && cd pdf-review-mcp   # then Option A or B
 ```
 
 ## Offline

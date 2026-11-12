@@ -1,6 +1,6 @@
 [project]
 name = "pdf-review-mcp"
-version = "1.0.0rc1"
+version = "1.0.0"
 description = "Local stdio MCP server for human/agent review of PDF annotation comments on the original comment"
 readme = "README.md"
 requires-python = ">=3.11"

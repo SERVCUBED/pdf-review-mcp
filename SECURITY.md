@@ -1,6 +1,6 @@
 # Security notes
 
-pdf-review-mcp 1.0.0rc1 is a release candidate maintained by Ben Blain. Please report suspected
+pdf-review-mcp 1.0.0 is maintained by Ben Blain. Please report suspected
 vulnerabilities **privately** to the maintainer, through the private reporting channel of the
 repository host you obtained the code from (for example GitHub's "Report a vulnerability", if it
 is enabled there). Do not open public issues for vulnerabilities.

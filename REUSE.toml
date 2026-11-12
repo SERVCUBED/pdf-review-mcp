@@ -1,0 +1,42 @@
+version = 1
+SPDX-PackageName = "pdf-review-mcp"
+SPDX-PackageSupplier = "Ben Blain"
+
+# Software: Python source, tests, scripts, configuration, build files, CI and examples.
+[[annotations]]
+path = [
+    "src/**",
+    "tests/**",
+    "scripts/**",
+    "examples/**",
+    ".github/**",
+    "pyproject.toml",
+    "REUSE.toml",
+    ".gitignore",
+    ".gitattributes",
+    ".editorconfig",
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Ben Blain"
+SPDX-License-Identifier = "AGPL-3.0-or-later"
+
+# Documentation. Code snippets (fenced code blocks) inside these documents are additionally
+# offered under AGPL-3.0-or-later; see LICENSING.md.
+[[annotations]]
+path = [
+    "README.md",
+    "AGENTS.md",
+    "SECURITY.md",
+    "CONTRIBUTING.md",
+    "CHANGELOG.md",
+    "LICENSING.md",
+    "THIRD_PARTY_NOTICES.md",
+    "docs/**",
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Ben Blain"
+SPDX-License-Identifier = "CC-BY-SA-4.0"
+
+# LICENSE and LICENSES/* are the verbatim license texts published by the Free Software Foundation
+# and Creative Commons. REUSE excludes them from coverage by design; no copyright claim is made
+# on them by this project.

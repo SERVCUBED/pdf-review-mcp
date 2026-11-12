@@ -1,0 +1,9 @@
+{
+  "_comment": "Restricted: only PDFs whose resolved real path is inside the given directory (repeat --allow-dir for more). The directory must exist and be absolute, or the server refuses to start. Do not also set PDF_REVIEW_ALLOW_DIRS; PDF_REVIEW_ROOT is not supported.",
+  "mcpServers": {
+    "pdf-review": {
+      "command": "<ABSOLUTE_PATH_TO>/pdf-review-mcp",
+      "args": ["--allow-dir", "<ABSOLUTE_PATH_TO_REVIEW_FOLDER>"]
+    }
+  }
+}

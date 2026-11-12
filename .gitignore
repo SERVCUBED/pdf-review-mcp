@@ -1,0 +1,30 @@
+# Python / tooling
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+*.egg-info/
+build/
+dist/
+releases/
+wheelhouse/
+
+# Never commit user documents, renders, logs or secrets
+*.pdf
+*.png
+*.log
+*.key
+*.review.lock
+.*.review.lock
+.env
+.env.*
+renders/
+docs/renders/
+history/
+observations/
+analysis/

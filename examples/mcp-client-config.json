@@ -1,0 +1,9 @@
+{
+  "_comment": "Default (unrestricted: any absolute PDF path your user can access; not a sandbox). Replace <ABSOLUTE_PATH_TO> with the output of `command -v pdf-review-mcp`. Restart/reconnect the MCP client after changing this.",
+  "mcpServers": {
+    "pdf-review": {
+      "command": "<ABSOLUTE_PATH_TO>/pdf-review-mcp",
+      "args": []
+    }
+  }
+}

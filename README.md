@@ -33,7 +33,7 @@ Paste the prompt below into your coding agent. First replace the `<…>` placeho
 **one** access line: delete the other one.
 
 ```text
-Install the pdf-review-mcp MCP server from <REPOSITORY_URL_OR_LOCAL_PATH> for <MCP_CLIENT_NAME>.
+Install the pdf-review-mcp MCP server from [[<REPOSITORY_URL_OR_LOCAL_PATH>](https://github.com/SERVCUBED/pdf-review-mcp)](https://github.com/SERVCUBED/pdf-review-mcp)..
 Read AGENTS.md and docs/INSTALL.md in that repository first and follow them.
 - Install it user-level, isolated and non-editable (uv tool or a dedicated venv). No sudo.
 - Access: restrict it to --allow-dir <ABSOLUTE_PATH_TO_REVIEW_FOLDER>

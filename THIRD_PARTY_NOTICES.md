@@ -9,6 +9,7 @@ licenses; nothing in this project's [LICENSING.md](LICENSING.md) applies to them
 |---|---|---|
 | [PyMuPDF](https://pymupdf.readthedocs.io) (with MuPDF) | PDF parsing, annotations and rendering | **Dual-licensed: GNU AGPL-3.0, or a commercial license from Artifex Software, Inc.** |
 | [FastMCP](https://gofastmcp.com) | MCP server and client framework | see the package's own metadata |
+| [portalocker](https://github.com/wolph/portalocker) | transient write lock beside the PDF (`TemporaryFileLock`) | BSD-3-Clause (Copyright 2022 Rick van Hattem) |
 | [MCP Python SDK](https://modelcontextprotocol.io), Pydantic and further transitive dependencies | installed by FastMCP | see each package's own metadata |
 
 * **PyMuPDF:** this project is AGPL-3.0-or-later, which is consistent with using PyMuPDF under

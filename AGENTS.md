@@ -37,8 +37,18 @@ installation details are in [docs/INSTALL.md](docs/INSTALL.md).
 * Find out where the source comes from:
   * **a local clone or unpacked archive** (preferred, works offline);
   * **a git URL** given by the human (`git clone <REPO_URL>`). Never guess a URL.
-* If dependencies must be downloaded and network access is unavailable or not permitted, stop and
-  tell the human (see the offline notes in docs/INSTALL.md).
+* The runtime dependencies are `fastmcp`, `pymupdf` and `portalocker` (see `pyproject.toml`). If
+  they must be downloaded and network access is unavailable or not permitted, stop and tell the
+  human (see the offline notes in docs/INSTALL.md).
+* **portalocker is pinned to exactly 4.4.2.**
+  - Never upgrade, downgrade or replace it, and never install the server into an environment
+    where another version is forced.
+  - If writes fail with "reviewed only for portalocker==4.4.2", stop and report it; do not work
+    around it.
+  - Changing the pin is a maintainer decision that needs a review.
+* The write lock assumes the PDF's directory is a stable directory owned by the user and on a
+  local POSIX filesystem. Shared, network and other-user-writable directories are outside the
+  supported scope: don't write there, and tell the human instead (see SECURITY.md).
 
 ## 2. Install (user level, non-editable)
 

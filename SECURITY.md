@@ -73,12 +73,40 @@ network listener, makes no network calls, and executes no code from PDFs. The ma
   adds the requested note or highlight). Then `os.replace()` and an fsync.
 * **Refused:** encrypted, password-protected and signed PDFs (or those with signature fields), and
   files that need repair or cannot be saved incrementally.
-* **Transient lock** `.<name>.pdf.review.lock`, beside the PDF:
-  - It exists only during a write. It is opened without following symlinks and never truncated,
-    and must be a regular single-link file owned by you, otherwise the write is refused.
-  - With the lock held, its inode is validated, and the owner removes it before releasing.
-  - After a crash (`SIGKILL`, power loss) an empty lock file may remain; the next write reuses and
-    removes it. No signal handlers are installed.
+* **Transient lock** `.<name>.pdf.review.lock`, beside the PDF, provided by
+  [portalocker](https://github.com/wolph/portalocker) `TemporaryFileLock` (BSD-3-Clause):
+  - It exists only during a write. portalocker takes an exclusive `flock`, then checks that the
+    handle is still the file at the path (retrying if a previous owner removed it), and on release
+    unlinks the path while still locked, only if it is still its own file. A contender that times
+    out removes nothing.
+  - This project adds only an open guard: `O_NOFOLLOW|O_NONBLOCK`, mode 0600, never `O_TRUNC`, then
+    an `fstat` of the opened descriptor, which must be a regular file without extra hard links and
+    owned by you. Symlinks, FIFOs, directories, hard links and foreign files make the write fail
+    closed before anything is locked or truncated. The adapter also refuses if the held
+    descriptor was not opened through the guard.
+  - After a crash (`SIGKILL`, power loss) an empty lock file may remain; the kernel has dropped
+    the lock, and the next write reuses and removes it. Older versions may have left such empty
+    files too; they are handled the same way.
+  - **Exact pin:** the guard is attached through portalocker's public `file_open_kwargs`
+    attribute, because `TemporaryFileLock` has no constructor argument for it. That integration
+    is reviewed only for **portalocker 4.4.2**. The dependency is pinned `==4.4.2`.
+    - Before constructing the lock or opening any file, the server checks the installed version
+      in package metadata. Any other version, and a missing or broken install, refuse the write,
+      with no lock file and no side effects.
+    - This guards against version drift. It does not protect against a tampered copy of 4.4.2.
+    - The check after acquiring, that the held descriptor came through the guard, is only
+      defence in depth: it detects a bypass after the open, it does not prevent one.
+    - **Upgrading portalocker needs a deliberate review** of its open path, plus a rerun of
+      `tests/test_lock.py` (hostile paths and real processes) before the pin changes.
+  - **Supported scope:** cooperative writers, on a local POSIX filesystem on one host (no NFS
+    claim), in a **stable directory controlled by the PDF's owner**.
+    - **Not promised:** safety while other processes rename, replace or insert entries in the
+      PDF's directory during a write. Paths are resolved by name.
+    - On release, portalocker compares the path using `stat`, which follows symlinks, so a
+      symlink to the held file swapped in during a write would have the link removed.
+    - This is narrower than the earlier custom lock, which resolved names through a pinned
+      directory descriptor. The maintainer accepted the narrower scope. Shared, network and
+      other-user-writable directories are outside it.
 * **Not protected against:** programs that ignore the lock and replace the file at the last
   moment, or a viewer saving an old in-memory copy over the agent's changes. Close PDFs in viewers
   while agents write.
@@ -86,6 +114,6 @@ network listener, makes no network calls, and executes no code from PDFs. The ma
 ## Operating systems
 
 * **Linux:** supported and tested.
-* **macOS:** expected to work (POSIX `flock`, `openat`, `O_NOFOLLOW`) but untested.
-* **Windows:** writes fail closed, because the required lock primitives are unavailable; reads are
-  untested.
+* **macOS:** expected to work (POSIX `flock`, `O_NOFOLLOW`) but untested.
+* **Windows:** writes fail closed. portalocker itself supports Windows, but this project's open
+  guard (`O_NOFOLLOW`, owner check) is POSIX-only, so writes are refused; reads are untested.

@@ -346,8 +346,8 @@ def test_cross_process_lock_busy(svc, plain, monkeypatch, root):
         [sys.executable, "-c", textwrap.dedent(f"""
             import sys
             from pathlib import Path
-            from pdf_review_mcp import posixlock
-            h = posixlock.acquire(Path({str(lock_path)!r}), 10)
+            from pdf_review_mcp import filelocks
+            h = filelocks.acquire(Path({str(lock_path)!r}), 10)
             print('locked', flush=True); sys.stdin.readline(); h.release()
         """)],
         stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True,

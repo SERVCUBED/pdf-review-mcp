@@ -79,6 +79,6 @@ mean two different licenses.
 
 ## Third-party components
 
-The dependencies (FastMCP, PyMuPDF/MuPDF and their own dependencies) are **not** part of this
-copyright or license grant and are not distributed in this repository. See
+The dependencies (FastMCP, PyMuPDF/MuPDF, portalocker and their own dependencies) are **not**
+part of this copyright or license grant and are not distributed in this repository. See
 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

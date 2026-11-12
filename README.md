@@ -56,8 +56,15 @@ answer, done and reopen on a temporary PDF. Without that, it only reads.
 | Platform | Status |
 |---|---|
 | Linux (x86-64) | Supported. This is where the release candidate was tested. |
-| macOS | Expected to work: it uses the same POSIX `flock`/`openat` primitives. **Not tested.** |
-| Windows | **Not supported for writing.** The write lock needs POSIX `flock` and `dir_fd`, so writes are refused (fail closed). Reads may work but are untested. |
+| macOS | Expected to work: it uses the same POSIX `flock`/`O_NOFOLLOW` primitives. **Not tested.** |
+| Windows | **Not supported for writing.** The write lock's safety guard needs POSIX `O_NOFOLLOW` and file ownership checks, so writes are refused (fail closed). Reads may work but are untested. |
+
+Write lock: the transient lock beside the PDF comes from **portalocker, pinned exactly to
+4.4.2**. Any other installed version refuses writes before touching the lock path, and upgrades
+need a deliberate review. It is supported only for
+cooperative writers on a local POSIX filesystem, in a stable directory controlled by the PDF's
+owner. Safety while other processes rename or replace entries in that directory during a write
+is **not** promised. See [SECURITY.md](SECURITY.md).
 
 Requirements: Python **3.11 or newer** (tested on CPython 3.12 and 3.14), and permission to write in the PDF's
 directory, which the transient lock file and the atomic temp file need. There are no network

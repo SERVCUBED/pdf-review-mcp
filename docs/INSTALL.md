@@ -8,8 +8,15 @@ repository, or an unpacked release archive.
 * Linux (supported) or macOS (expected to work, untested). Windows is not supported for writing.
 * Python ≥ 3.11 (`python3 --version`). The release candidate was tested on CPython 3.12 and 3.14.
 * Either [uv](https://docs.astral.sh/uv/) (recommended) or `pip` with `venv`.
-* Network access to the package index, to download `fastmcp` and `pymupdf`, unless they are
-  already in your local cache or wheelhouse (see "Offline" below).
+* Network access to the package index, to download `fastmcp`, `pymupdf` and `portalocker`, unless
+  they are already in your local cache or wheelhouse (see "Offline" below).
+* **portalocker must be exactly 4.4.2** (pinned in `pyproject.toml`). If another version ends up
+  installed, for example through a manual upgrade or a shared environment, the server still
+  reads but **refuses every write** with "reviewed only for portalocker==4.4.2". Do not upgrade
+  it on your own: a new version needs a code review and the lock tests rerun.
+* Writes are supported only for PDFs in a stable directory you own, on a local POSIX
+  filesystem. Shared, network and other-user-writable directories are not supported; see
+  `SECURITY.md`.
 
 ## Option A: uv tool (stable, non-editable, user level)
 
@@ -47,15 +54,15 @@ git clone <REPO_URL> pdf-review-mcp && cd pdf-review-mcp   # then Option A or B
 ## Offline
 
 * **With a populated uv cache:** `uv build --wheel --offline` and
-  `uv tool install --offline ./dist/<wheel>` work if `fastmcp`, `pymupdf` and their
-  dependencies are already cached.
+  `uv tool install --offline ./dist/<wheel>` work if `fastmcp`, `pymupdf`, `portalocker` and
+  their dependencies are already cached.
 * **With a wheelhouse prepared on a connected machine** (`pip download . -d wheelhouse`):
   `pip install --no-index --find-links wheelhouse /path/to/pdf-review-mcp`.
 
 ## Validate
 
 ```bash
-python3 scripts/smoke_test.py --command "$(command -v pdf-review-mcp)"   # needs fastmcp+pymupdf in that python
+python3 scripts/smoke_test.py --command "$(command -v pdf-review-mcp)"   # needs fastmcp+pymupdf+portalocker in that python
 # or, from a development venv:
 .venv/bin/python scripts/smoke_test.py --command "$(command -v pdf-review-mcp)"
 ```

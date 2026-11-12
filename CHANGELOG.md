@@ -1,5 +1,24 @@
 # Changelog
 
+## Unreleased
+
+* **Lock:**
+  - The custom `posixlock` module is replaced by
+    [portalocker](https://github.com/wolph/portalocker) `TemporaryFileLock`, a new dependency
+    pinned exactly `portalocker==4.4.2` (BSD-3-Clause), plus a small fail-closed open guard.
+  - Any other installed portalocker version refuses writes before the lock path is touched.
+  - The lock file still exists only during a write, and hostile lock paths still refuse the
+    write. Windows writes remain unsupported.
+  - **Narrower guarantee than before (accepted by the maintainer):** it covers a stable,
+    owner-controlled directory only. Safety against renames or replacements of directory entries
+    during a write is no longer promised, because the pinned-directory semantics are gone and
+    release follows symlinks. See `SECURITY.md`.
+  - **Upgrade policy:** the pin changes only after a review of portalocker's open path and a
+    rerun of `tests/test_lock.py` on the new version.
+  - **Validation (2026-11-12, Linux, CPython 3.12, portalocker 4.4.2):** 219 tests passed on
+    tmpfs and on ext4; the stdio smoke test against a freshly installed wheel prints
+    `SMOKE OK`. This is a separate measurement from the historical 1.0.0rc1 figure (206) below.
+
 ## 1.0.0rc1: release candidate
 
 First release candidate.
@@ -25,7 +44,7 @@ First release candidate.
   - absolute paths with an optional `--allow-dir` allowlist; `PDF_REVIEW_ROOT` is refused at
     startup;
   - revision checks with a final re-hash; atomic, verified incremental writes;
-  - a transient inode-validated POSIX lock;
+  - a transient inode-validated POSIX lock (replaced by portalocker; see Unreleased);
   - encrypted and signed PDFs refused;
   - untrusted-content warnings for agents.
 * **Platforms:** Linux is supported; macOS is expected to work but untested; Windows is
@@ -37,5 +56,5 @@ First release candidate.
   - The FreeText and history-full refusals said "reply instead". They now state that nothing was
     changed.
   - A regression test asserts that no error text names a removed tool.
-* **Validation (Linux, CPython 3.12):** 206 tests pass; the stdio smoke test against the
+* **Validation (Linux, CPython 3.12), as measured for the 1.0.0rc1 release with the custom lock:** 206 tests passed; the stdio smoke test against the
   installed wheel prints `SMOKE OK`.

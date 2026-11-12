@@ -39,7 +39,7 @@ from pathlib import Path
 from typing import Any, Callable, Iterator
 
 import pymupdf
-from . import posixlock
+from . import filelocks
 
 TOOL_MARK = "pdf-review-mcp"
 # Private (non-standard) keys. KEY_TOOL is an unauthenticated provenance hint (anyone can
@@ -611,12 +611,12 @@ class PdfStore:
         if not isinstance(expected_revision, str) or not expected_revision.startswith("sha256:"):
             raise ReviewError("expected_revision must be the 'sha256:...' revision from a prior read")
         try:
-            lock = posixlock.acquire(self.lock_path(path), LOCK_TIMEOUT_S)
-        except posixlock.LockTimeout:
+            lock = filelocks.acquire(self.lock_path(path), LOCK_TIMEOUT_S)
+        except filelocks.LockTimeout:
             raise LockBusyError(f"PDF is locked by another writer (waited {LOCK_TIMEOUT_S}s)") from None
-        except posixlock.LockUnsupported as exc:
+        except filelocks.LockUnsupported as exc:
             raise WriteBlockedError(f"Writes are not supported here: {exc}") from None
-        except posixlock.LockUnsafe as exc:
+        except filelocks.LockUnsafe as exc:
             raise WriteBlockedError(f"Refusing to write: {exc}") from None
         tmp_name = None
         try:
